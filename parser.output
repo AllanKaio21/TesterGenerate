@@ -1,0 +1,718 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: header function RETURN BRACKETOPEN listas BRACKETCLOSE end
+
+    2 header: PHP IDENTIFIER
+    3       | header IDENTIFIER
+
+    4 function: CLASS IDENTIFIER
+    5         | FUNC KEYOPEN
+    6         | function KEYOPEN
+    7         | function IDENTIFIER
+
+    8 listas: lista
+    9       | lista COMMA
+   10       | lista COMMA listas
+
+   11 lista: BRACKETOPEN atributos rules BRACKETCLOSE
+
+   12 $@1: %empty
+
+   13 atributos: APOS IDENTIFIER $@1 APOS data
+   14          | BRACKETOPEN atributo BRACKETCLOSE
+
+   15 $@2: %empty
+
+   16 atributo: APOS IDENTIFIER $@2 APOS data
+
+   17 $@3: %empty
+
+   18 atributo: atributo COMMA APOS IDENTIFIER $@3 APOS data
+
+   19 data: %empty
+   20     | data DATAN
+   21     | data DATAY
+
+   22 rules: rule
+   23      | rules rule
+   24      | rules ASSING assignment
+
+   25 rule: COMMA IDENTIFIER
+   26     | COMMA APOS IDENTIFIER APOS
+
+   27 assignment: CONST
+   28           | IDENTIFIER
+   29           | APOS IDENTIFIER APOS
+   30           | APOS CONST APOS
+   31           | BRACKETOPEN assignment ASSING assignment BRACKETCLOSE
+
+   32 end: IDENTIFIER KEYCLOSE ignor
+   33    | KEYCLOSE ignor
+
+   34 ignor: %empty
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+BRACKETOPEN (258) 1 11 14 31
+BRACKETCLOSE (259) 1 11 14 31
+COMMA (260) 9 10 18 25 26
+APOS (261) 13 16 18 26 29 30
+ASSING (262) 24 31
+CONST (263) 27 30
+KEYOPEN (264) 5 6
+KEYCLOSE (265) 32 33
+FUNC (266) 5
+RETURN (267) 1
+PHP (268) 2
+IDENTIFIER (269) 2 3 4 7 13 16 18 25 26 28 29 32
+DATAY (270) 21
+DATAN (271) 20
+CLASS (272) 4
+
+
+Nonterminals, with rules where they appear
+
+$accept (18)
+    on left: 0
+program (19)
+    on left: 1, on right: 0
+header (20)
+    on left: 2 3, on right: 1 3
+function (21)
+    on left: 4 5 6 7, on right: 1 6 7
+listas (22)
+    on left: 8 9 10, on right: 1 10
+lista (23)
+    on left: 11, on right: 8 9 10
+atributos (24)
+    on left: 13 14, on right: 11
+$@1 (25)
+    on left: 12, on right: 13
+atributo (26)
+    on left: 16 18, on right: 14 18
+$@2 (27)
+    on left: 15, on right: 16
+$@3 (28)
+    on left: 17, on right: 18
+data (29)
+    on left: 19 20 21, on right: 13 16 18 20 21
+rules (30)
+    on left: 22 23 24, on right: 11 23 24
+rule (31)
+    on left: 25 26, on right: 22 23
+assignment (32)
+    on left: 27 28 29 30 31, on right: 24 31
+end (33)
+    on left: 32 33, on right: 1
+ignor (34)
+    on left: 34, on right: 32 33
+
+
+State 0
+
+    0 $accept: . program $end
+
+    PHP  shift, and go to state 1
+
+    program  go to state 2
+    header   go to state 3
+
+
+State 1
+
+    2 header: PHP . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    1 program: header . function RETURN BRACKETOPEN listas BRACKETCLOSE end
+    3 header: header . IDENTIFIER
+
+    FUNC        shift, and go to state 6
+    IDENTIFIER  shift, and go to state 7
+    CLASS       shift, and go to state 8
+
+    function  go to state 9
+
+
+State 4
+
+    2 header: PHP IDENTIFIER .
+
+    $default  reduce using rule 2 (header)
+
+
+State 5
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 6
+
+    5 function: FUNC . KEYOPEN
+
+    KEYOPEN  shift, and go to state 10
+
+
+State 7
+
+    3 header: header IDENTIFIER .
+
+    $default  reduce using rule 3 (header)
+
+
+State 8
+
+    4 function: CLASS . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 11
+
+
+State 9
+
+    1 program: header function . RETURN BRACKETOPEN listas BRACKETCLOSE end
+    6 function: function . KEYOPEN
+    7         | function . IDENTIFIER
+
+    KEYOPEN     shift, and go to state 12
+    RETURN      shift, and go to state 13
+    IDENTIFIER  shift, and go to state 14
+
+
+State 10
+
+    5 function: FUNC KEYOPEN .
+
+    $default  reduce using rule 5 (function)
+
+
+State 11
+
+    4 function: CLASS IDENTIFIER .
+
+    $default  reduce using rule 4 (function)
+
+
+State 12
+
+    6 function: function KEYOPEN .
+
+    $default  reduce using rule 6 (function)
+
+
+State 13
+
+    1 program: header function RETURN . BRACKETOPEN listas BRACKETCLOSE end
+
+    BRACKETOPEN  shift, and go to state 15
+
+
+State 14
+
+    7 function: function IDENTIFIER .
+
+    $default  reduce using rule 7 (function)
+
+
+State 15
+
+    1 program: header function RETURN BRACKETOPEN . listas BRACKETCLOSE end
+
+    BRACKETOPEN  shift, and go to state 16
+
+    listas  go to state 17
+    lista   go to state 18
+
+
+State 16
+
+   11 lista: BRACKETOPEN . atributos rules BRACKETCLOSE
+
+    BRACKETOPEN  shift, and go to state 19
+    APOS         shift, and go to state 20
+
+    atributos  go to state 21
+
+
+State 17
+
+    1 program: header function RETURN BRACKETOPEN listas . BRACKETCLOSE end
+
+    BRACKETCLOSE  shift, and go to state 22
+
+
+State 18
+
+    8 listas: lista .
+    9       | lista . COMMA
+   10       | lista . COMMA listas
+
+    COMMA  shift, and go to state 23
+
+    $default  reduce using rule 8 (listas)
+
+
+State 19
+
+   14 atributos: BRACKETOPEN . atributo BRACKETCLOSE
+
+    APOS  shift, and go to state 24
+
+    atributo  go to state 25
+
+
+State 20
+
+   13 atributos: APOS . IDENTIFIER $@1 APOS data
+
+    IDENTIFIER  shift, and go to state 26
+
+
+State 21
+
+   11 lista: BRACKETOPEN atributos . rules BRACKETCLOSE
+
+    COMMA  shift, and go to state 27
+
+    rules  go to state 28
+    rule   go to state 29
+
+
+State 22
+
+    1 program: header function RETURN BRACKETOPEN listas BRACKETCLOSE . end
+
+    KEYCLOSE    shift, and go to state 30
+    IDENTIFIER  shift, and go to state 31
+
+    end  go to state 32
+
+
+State 23
+
+    9 listas: lista COMMA .
+   10       | lista COMMA . listas
+
+    BRACKETOPEN  shift, and go to state 16
+
+    $default  reduce using rule 9 (listas)
+
+    listas  go to state 33
+    lista   go to state 18
+
+
+State 24
+
+   16 atributo: APOS . IDENTIFIER $@2 APOS data
+
+    IDENTIFIER  shift, and go to state 34
+
+
+State 25
+
+   14 atributos: BRACKETOPEN atributo . BRACKETCLOSE
+   18 atributo: atributo . COMMA APOS IDENTIFIER $@3 APOS data
+
+    BRACKETCLOSE  shift, and go to state 35
+    COMMA         shift, and go to state 36
+
+
+State 26
+
+   13 atributos: APOS IDENTIFIER . $@1 APOS data
+
+    $default  reduce using rule 12 ($@1)
+
+    $@1  go to state 37
+
+
+State 27
+
+   25 rule: COMMA . IDENTIFIER
+   26     | COMMA . APOS IDENTIFIER APOS
+
+    APOS        shift, and go to state 38
+    IDENTIFIER  shift, and go to state 39
+
+
+State 28
+
+   11 lista: BRACKETOPEN atributos rules . BRACKETCLOSE
+   23 rules: rules . rule
+   24      | rules . ASSING assignment
+
+    BRACKETCLOSE  shift, and go to state 40
+    COMMA         shift, and go to state 27
+    ASSING        shift, and go to state 41
+
+    rule  go to state 42
+
+
+State 29
+
+   22 rules: rule .
+
+    $default  reduce using rule 22 (rules)
+
+
+State 30
+
+   33 end: KEYCLOSE . ignor
+
+    $default  reduce using rule 34 (ignor)
+
+    ignor  go to state 43
+
+
+State 31
+
+   32 end: IDENTIFIER . KEYCLOSE ignor
+
+    KEYCLOSE  shift, and go to state 44
+
+
+State 32
+
+    1 program: header function RETURN BRACKETOPEN listas BRACKETCLOSE end .
+
+    $default  reduce using rule 1 (program)
+
+
+State 33
+
+   10 listas: lista COMMA listas .
+
+    $default  reduce using rule 10 (listas)
+
+
+State 34
+
+   16 atributo: APOS IDENTIFIER . $@2 APOS data
+
+    $default  reduce using rule 15 ($@2)
+
+    $@2  go to state 45
+
+
+State 35
+
+   14 atributos: BRACKETOPEN atributo BRACKETCLOSE .
+
+    $default  reduce using rule 14 (atributos)
+
+
+State 36
+
+   18 atributo: atributo COMMA . APOS IDENTIFIER $@3 APOS data
+
+    APOS  shift, and go to state 46
+
+
+State 37
+
+   13 atributos: APOS IDENTIFIER $@1 . APOS data
+
+    APOS  shift, and go to state 47
+
+
+State 38
+
+   26 rule: COMMA APOS . IDENTIFIER APOS
+
+    IDENTIFIER  shift, and go to state 48
+
+
+State 39
+
+   25 rule: COMMA IDENTIFIER .
+
+    $default  reduce using rule 25 (rule)
+
+
+State 40
+
+   11 lista: BRACKETOPEN atributos rules BRACKETCLOSE .
+
+    $default  reduce using rule 11 (lista)
+
+
+State 41
+
+   24 rules: rules ASSING . assignment
+
+    BRACKETOPEN  shift, and go to state 49
+    APOS         shift, and go to state 50
+    CONST        shift, and go to state 51
+    IDENTIFIER   shift, and go to state 52
+
+    assignment  go to state 53
+
+
+State 42
+
+   23 rules: rules rule .
+
+    $default  reduce using rule 23 (rules)
+
+
+State 43
+
+   33 end: KEYCLOSE ignor .
+
+    $default  reduce using rule 33 (end)
+
+
+State 44
+
+   32 end: IDENTIFIER KEYCLOSE . ignor
+
+    $default  reduce using rule 34 (ignor)
+
+    ignor  go to state 54
+
+
+State 45
+
+   16 atributo: APOS IDENTIFIER $@2 . APOS data
+
+    APOS  shift, and go to state 55
+
+
+State 46
+
+   18 atributo: atributo COMMA APOS . IDENTIFIER $@3 APOS data
+
+    IDENTIFIER  shift, and go to state 56
+
+
+State 47
+
+   13 atributos: APOS IDENTIFIER $@1 APOS . data
+
+    $default  reduce using rule 19 (data)
+
+    data  go to state 57
+
+
+State 48
+
+   26 rule: COMMA APOS IDENTIFIER . APOS
+
+    APOS  shift, and go to state 58
+
+
+State 49
+
+   31 assignment: BRACKETOPEN . assignment ASSING assignment BRACKETCLOSE
+
+    BRACKETOPEN  shift, and go to state 49
+    APOS         shift, and go to state 50
+    CONST        shift, and go to state 51
+    IDENTIFIER   shift, and go to state 52
+
+    assignment  go to state 59
+
+
+State 50
+
+   29 assignment: APOS . IDENTIFIER APOS
+   30           | APOS . CONST APOS
+
+    CONST       shift, and go to state 60
+    IDENTIFIER  shift, and go to state 61
+
+
+State 51
+
+   27 assignment: CONST .
+
+    $default  reduce using rule 27 (assignment)
+
+
+State 52
+
+   28 assignment: IDENTIFIER .
+
+    $default  reduce using rule 28 (assignment)
+
+
+State 53
+
+   24 rules: rules ASSING assignment .
+
+    $default  reduce using rule 24 (rules)
+
+
+State 54
+
+   32 end: IDENTIFIER KEYCLOSE ignor .
+
+    $default  reduce using rule 32 (end)
+
+
+State 55
+
+   16 atributo: APOS IDENTIFIER $@2 APOS . data
+
+    $default  reduce using rule 19 (data)
+
+    data  go to state 62
+
+
+State 56
+
+   18 atributo: atributo COMMA APOS IDENTIFIER . $@3 APOS data
+
+    $default  reduce using rule 17 ($@3)
+
+    $@3  go to state 63
+
+
+State 57
+
+   13 atributos: APOS IDENTIFIER $@1 APOS data .
+   20 data: data . DATAN
+   21     | data . DATAY
+
+    DATAY  shift, and go to state 64
+    DATAN  shift, and go to state 65
+
+    $default  reduce using rule 13 (atributos)
+
+
+State 58
+
+   26 rule: COMMA APOS IDENTIFIER APOS .
+
+    $default  reduce using rule 26 (rule)
+
+
+State 59
+
+   31 assignment: BRACKETOPEN assignment . ASSING assignment BRACKETCLOSE
+
+    ASSING  shift, and go to state 66
+
+
+State 60
+
+   30 assignment: APOS CONST . APOS
+
+    APOS  shift, and go to state 67
+
+
+State 61
+
+   29 assignment: APOS IDENTIFIER . APOS
+
+    APOS  shift, and go to state 68
+
+
+State 62
+
+   16 atributo: APOS IDENTIFIER $@2 APOS data .
+   20 data: data . DATAN
+   21     | data . DATAY
+
+    DATAY  shift, and go to state 64
+    DATAN  shift, and go to state 65
+
+    $default  reduce using rule 16 (atributo)
+
+
+State 63
+
+   18 atributo: atributo COMMA APOS IDENTIFIER $@3 . APOS data
+
+    APOS  shift, and go to state 69
+
+
+State 64
+
+   21 data: data DATAY .
+
+    $default  reduce using rule 21 (data)
+
+
+State 65
+
+   20 data: data DATAN .
+
+    $default  reduce using rule 20 (data)
+
+
+State 66
+
+   31 assignment: BRACKETOPEN assignment ASSING . assignment BRACKETCLOSE
+
+    BRACKETOPEN  shift, and go to state 49
+    APOS         shift, and go to state 50
+    CONST        shift, and go to state 51
+    IDENTIFIER   shift, and go to state 52
+
+    assignment  go to state 70
+
+
+State 67
+
+   30 assignment: APOS CONST APOS .
+
+    $default  reduce using rule 30 (assignment)
+
+
+State 68
+
+   29 assignment: APOS IDENTIFIER APOS .
+
+    $default  reduce using rule 29 (assignment)
+
+
+State 69
+
+   18 atributo: atributo COMMA APOS IDENTIFIER $@3 APOS . data
+
+    $default  reduce using rule 19 (data)
+
+    data  go to state 71
+
+
+State 70
+
+   31 assignment: BRACKETOPEN assignment ASSING assignment . BRACKETCLOSE
+
+    BRACKETCLOSE  shift, and go to state 72
+
+
+State 71
+
+   18 atributo: atributo COMMA APOS IDENTIFIER $@3 APOS data .
+   20 data: data . DATAN
+   21     | data . DATAY
+
+    DATAY  shift, and go to state 64
+    DATAN  shift, and go to state 65
+
+    $default  reduce using rule 18 (atributo)
+
+
+State 72
+
+   31 assignment: BRACKETOPEN assignment ASSING assignment BRACKETCLOSE .
+
+    $default  reduce using rule 31 (assignment)

@@ -1,0 +1,28 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+
+class Imovel extends \yii\db\ActiveRecord
+{
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['nome'/*Y:KAIO*/, 'pessoa_id'/*Y:8*/], 'required'],
+            [['pessoa_id', 'cidade_id', 'estado_id'], 'integer'],
+            [['cep', 'rua'], 'string','max' => 255],
+            [['nome', 'complemento'], 'string'],
+            [['valor'], 'number', 'min' => 0, 'max' => 9999999999],
+            [['cidade_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cidade::className()],
+            [['estado_id'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className()],
+            [['pessoa_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pessoa::className()],
+            [['cep'], 'ceptester'],
+        ];
+    }
+
+}

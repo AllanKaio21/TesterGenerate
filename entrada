@@ -1,0 +1,33 @@
+<?php
+
+namespace app\models;
+
+
+use Yii;
+
+class Feedback extends \yii\db\ActiveRecord
+{
+	/**
+     * {@inheritdoc}
+     */
+
+	// Ola 
+    public function rules()
+    {
+
+		return [																
+			[['nome' /*Y:Allan Kaio*/ /*Y:Kaio Allan*/ /*N:*/, 'matricula' /*Y:8988*/ /*Y:0088*/ /*N:*/, 
+			'cpf' /*Y:000.000.000-22*/ /*Y:0000000082*/ /*N:*/, 'email' /*Y:allan@gmail.com*/ /*N:*/, 
+			'id_curso' /*Y:23*/ /*N:*/], 'required'],
+			[['rg', 'telefone', 'datanasc', 'status', 'periodo'], 'safe'],
+			[['nome', 'email'], 'string'],
+			[['datanasc' /*Y:01/10/2002*/ /*N:2002/10/10*/], 'date', 'format' => 'dd/mm/yyyy'],
+			[['email'], 'email', 'checkDNS'],
+			[['matricula', 'id_curso', 'periodo', 'status'], 'integer'],
+			['cpf' /*Y:111.111.111-22*/ /*Y:000000111-00*/ /*N:000-111-222-22*/ /*N:000.111.222.22*/, 'cpf'],
+			[['matricula'/*Y:1020*/ /*N:0088*/ /*N:8988*/], 'unique'],
+			[['matricula'], 'compare', 'compareValue', 'max' => 10],
+			[['datanasc'], 'DataNasc', 'max' => '1']
+		];
+	}
+}
