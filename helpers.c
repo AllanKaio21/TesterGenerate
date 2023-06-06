@@ -198,36 +198,35 @@ void testsBadField(FILE *file, char *class){
         if(p->iData[0] != NULL){
             int i = 0;
             while(i < p->iD) {
-                if(i != 0 || flag){
-                    fprintf(file, "\tpublic function %sinCorrect%c%sIn%c%sData%d(FunctionalTester $I)\n\t{\n", class, toupper(p->name[0]), &p->name[1], toupper(p->rule[0]), &p->rule[1], n+1);
-                    fprintf(file, "\t\t$I->wantTo('The registration occurs correctly for the %s field in the %s rule');\n", p->name, p->rule);
-                    fprintf(file, "\t\t$I->amOnRoute('%s/create');\n", rout);
-                    fprintf(file, "\t\t$I->submitForm('form',[\n");
-                    p2 = SymTabState();
-                    while (p2 != NULL) {
-                        if(p2->cData[0] == NULL && compare(p2->rule, "required")) {
-                            printf("Teste não pode ser concluido pois não ha parametros de dados para todos os atributos required!\n");
-                            return;
-                        } else if(!compare(p2->name, p->name) && compare(p2->rule, "required")) {
-                            fprintf(file, "\t\t\t'%s[%s]' => '%s', \n", class, p2->name, removeCM(p2->cData[0]));
-                        } else if(compare(p2->name, p->name) && compare(p2->rule, "required")) {
-                            fprintf(file, "\t\t\t'%s[%s]' => '%s', \n", class, p->name, removeCM(p->iData[i]));
-                        }
-                        p2 = p2->next;
+                fprintf(file, "\t// XXX: Creation test with invalid value of field %s %d° option. { %s }\n", p->name, i+1, p->iData[i]);
+                fprintf(file, "\tpublic function %sInCorrect%c%sIn%c%sData%d(FunctionalTester $I)\n\t{\n", class, toupper(p->name[0]), &p->name[1], toupper(p->rule[0]), &p->rule[1], n+1);
+                fprintf(file, "\t\t$I->wantTo('The registration occurs correctly for the %s field in the %s rule');\n", p->name, p->rule);
+                fprintf(file, "\t\t$I->amOnRoute('%s/create');\n", rout);
+                fprintf(file, "\t\t$I->submitForm('form',[\n");
+                p2 = SymTabState();
+                while (p2 != NULL) {
+                    if(p2->cData[0] == NULL && compare(p2->rule, "required")) {
+                        printf("Teste não pode ser concluido pois não ha parametros de dados para todos os atributos required!\n");
+                        return;
+                    } else if(!compare(p2->name, p->name) && compare(p2->rule, "required")) {
+                        fprintf(file, "\t\t\t'%s[%s]' => '%s', \n", class, p2->name, removeCM(p2->cData[0]));
+                    } else if(compare(p2->name, p->name) && compare(p2->rule, "required")) {
+                        fprintf(file, "\t\t\t'%s[%s]' => '%s', \n", class, p->name, removeCM(p->iData[i]));
                     }
-                    fprintf(file, "\t\t]);\n\t\t$I->dontSeeRecord('app\\models\\%s', [\n", class);
-                    p2 = SymTabState();
-                    while (p2 != NULL) {
-                        if(!compare(p2->name, p->name) && compare(p2->rule, "required")) {
-                            fprintf(file, "\t\t\t'%s' => '%s', \n", p2->name, removeCM(p2->cData[0]));
-                        } else if(compare(p2->name, p->name) && compare(p2->rule, "required")) {
-                            fprintf(file, "\t\t\t'%s' => '%s', \n", p->name, removeCM(p->iData[i]));
-                        }
-                        p2 = p2->next;
-                    }
-                    fprintf(file, "\t\t]);\n\t}\n\n");
-                    flag = 0;
+                    p2 = p2->next;
                 }
+                fprintf(file, "\t\t]);\n\t\t$I->dontSeeRecord('app\\models\\%s', [\n", class);
+                p2 = SymTabState();
+                while (p2 != NULL) {
+                    if(!compare(p2->name, p->name) && compare(p2->rule, "required")) {
+                        fprintf(file, "\t\t\t'%s' => '%s', \n", p2->name, removeCM(p2->cData[0]));
+                    } else if(compare(p2->name, p->name) && compare(p2->rule, "required")) {
+                        fprintf(file, "\t\t\t'%s' => '%s', \n", p->name, removeCM(p->iData[i]));
+                    }
+                    p2 = p2->next;
+                }
+                fprintf(file, "\t\t]);\n\t}\n\n");
+                flag = 0;
                 n ++;
                 i++;
             }

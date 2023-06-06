@@ -21,7 +21,7 @@ class Imovel extends \yii\db\ActiveRecord
             [['cidade_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cidade::className()],
             [['estado_id'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className()],
             [['pessoa_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pessoa::className()],
-            [['cep'], 'ceptester'],
+            [['cep'/*Y:76360000*/ /*N:88*/], 'ceptester'],
         ];
     }
 
